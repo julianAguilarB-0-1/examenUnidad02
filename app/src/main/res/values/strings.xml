@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">examenUnidad02</string>
+    <string name="strLibros">Libros</string>
+    <string name="strQr">Leer código QR</string>
+    <string name="strCodigo">Código</string>
+    <string name="strAutor">Autor</string>
+    <string name="strEditorial">Editorial</string>
+    <string name="strYear">Año de Publicación</string>
+    <string name="strAgregar">Agregar</string>
+    <string name="strActualizar">Actualizar</string>
+    <string name="strBorrar">Borrar</string>
 </resources>

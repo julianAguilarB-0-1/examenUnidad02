@@ -5,7 +5,7 @@ plugins {
 android {
     namespace = "com.example.examenunidad02"
     compileSdk {
-        version = release(36) {
+        version = release(37) {
             minorApiLevel = 1
         }
     }
@@ -44,4 +44,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+
+    //nuevas
+    implementation("com.google.code.gson:gson:2.13.1")
+// para convertir objeto en json
+    implementation("com.google.zxing:core:3.5.3")
+// para generar qr
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+//realizar la imagen
 }
