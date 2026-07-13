@@ -80,8 +80,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnAgregar.setOnClickListener {
+            val codigoActual = txtCodigo.text.toString().trim()
+
+            // Volver a consultar la BD con el código actual, por si el usuario lo cambió a mano
+            val libroExistente = db.getLibro(codigoActual)
+
+            if (libroExistente.id > 0) {
+                Toast.makeText(
+                    this,
+                    "Ya existe un libro registrado con el código $codigoActual",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             val libro = Libro(
-                codigo = txtCodigo.text.toString().trim(),
+                codigo = codigoActual,
                 autor = txtAutor.text.toString().trim(),
                 editorial = txtEditorial.text.toString().trim(),
                 year = txtYear.text.toString().trim().toIntOrNull() ?: 0
@@ -102,22 +116,36 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnActualizar.setOnClickListener {
+            val codigoActual = txtCodigo.text.toString().trim()
+
+            // Verificar que el código actual siga correspondiendo al libro que se cargó
+            val libroExistente = db.getLibro(codigoActual)
+
+            if (libroExistente.id == 0 || libroExistente.id != libroId) {
+                Toast.makeText(
+                    this,
+                    "El código no corresponde a un libro existente válido para actualizar",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             val libro = Libro(
                 id = libroId,
-                codigo = txtCodigo.text.toString().trim(),
+                codigo = codigoActual,
                 autor = txtAutor.text.toString().trim(),
                 editorial = txtEditorial.text.toString().trim(),
                 year = txtYear.text.toString().trim().toIntOrNull() ?: 0
             )
 
             val filas = db.actualizarLibro(libro)
+
             Toast.makeText(
                 this,
                 "Se actualizaron $filas registro(s)",
                 Toast.LENGTH_SHORT
             ).show()
         }
-
         btnBorrar.setOnClickListener {
             val libro = Libro(id = libroId)
 
@@ -159,7 +187,6 @@ class MainActivity : AppCompatActivity() {
                     btnActualizar.isEnabled = false
                     btnBorrar.isEnabled = false
                 }
-
             } else {
                 Toast.makeText(
                     this,
