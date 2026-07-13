@@ -7,5 +7,94 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10sp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/strLibros"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:paddingBottom="25sp">
+        </TextView>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/strQr"
+            android:textSize="20sp"
+            android:id="@+id/btnQR">
+        </Button>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30sp"
+            android:hint="@string/strCodigo"
+            android:textSize="20sp"
+            android:id="@+id/txtCodigo">
+        </EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30sp"
+            android:hint="@string/strAutor"
+            android:textSize="20sp"
+            android:id="@+id/txtAutor">
+        </EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30sp"
+            android:hint="@string/strEditorial"
+            android:textSize="20sp"
+            android:id="@+id/txtEditorial">
+        </EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30sp"
+            android:hint="@string/strYear"
+            android:textSize="20sp"
+
+            android:id="@+id/txtYear">
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="50sp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strAgregar"
+                android:id="@+id/btnAgregar"
+                android:textSize="20sp">
+            </Button>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strBorrar"
+                android:id="@+id/btnActualizar"
+                android:textSize="20sp">
+            </Button>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strBorrar"
+                android:id="@+id/btnBorrar"
+                android:textSize="20sp">
+            </Button>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
