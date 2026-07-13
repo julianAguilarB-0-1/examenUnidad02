@@ -77,21 +77,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/strAgregar"
                 android:id="@+id/btnAgregar"
-                android:textSize="20sp">
+                android:textSize="15sp">
             </Button>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/strBorrar"
+                android:text="@string/strActualizar"
                 android:id="@+id/btnActualizar"
-                android:textSize="20sp">
+                android:textSize="15sp">
             </Button>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/strBorrar"
                 android:id="@+id/btnBorrar"
-                android:textSize="20sp">
+                android:textSize="15sp">
             </Button>
         </LinearLayout>
 

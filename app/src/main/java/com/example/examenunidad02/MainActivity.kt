@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.examenunidad02.ADO.Libro
+import com.example.examenunidad02.ADO.LibroDB
 import com.google.gson.Gson
-import com.journeyapps.barcodescanner.ScanOptions
 import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var db: LibroDB
+
     private lateinit var btnQR: Button
     private lateinit var txtCodigo: EditText
     private lateinit var txtAutor: EditText
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnAgregar: Button
     private lateinit var btnActualizar: Button
     private lateinit var btnBorrar: Button
+
+    // id del libro actualmente cargado en el formulario (0 = no existe en la BD)
+    private var libroId: Int = 0
 
     private val barcode = registerForActivityResult(ScanContract()) { result ->
         if (result.contents != null) {
@@ -38,15 +42,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        db = LibroDB(this)
+        db.openDataBase()
+
         iniciarComponentes()
         eventosClick()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
 
     private fun iniciarComponentes() {
@@ -59,6 +61,10 @@ class MainActivity : AppCompatActivity() {
         btnAgregar = findViewById(R.id.btnAgregar)
         btnActualizar = findViewById(R.id.btnActualizar)
         btnBorrar = findViewById(R.id.btnBorrar)
+
+        btnAgregar.isEnabled = false
+        btnActualizar.isEnabled = false
+        btnBorrar.isEnabled = false
     }
 
     private fun eventosClick() {
@@ -72,6 +78,29 @@ class MainActivity : AppCompatActivity() {
 
             barcode.launch(opciones)
         }
+
+        btnAgregar.setOnClickListener {
+            val libro = Libro(
+                codigo = txtCodigo.text.toString().trim(),
+                autor = txtAutor.text.toString().trim(),
+                editorial = txtEditorial.text.toString().trim(),
+                year = txtYear.text.toString().trim().toIntOrNull() ?: 0
+            )
+
+            val id = db.insertarLibro(libro)
+
+            Toast.makeText(
+                this,
+                "Se guardo el libro con el ID $id",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            libroId = id.toInt()
+            btnAgregar.isEnabled = false
+            btnActualizar.isEnabled = true
+            btnBorrar.isEnabled = true
+        }
+
     }
 
     private fun mostrarInformacionQR(jsonString: String) {
@@ -84,6 +113,23 @@ class MainActivity : AppCompatActivity() {
                 txtAutor.setText(libro.autor)
                 txtEditorial.setText(libro.editorial)
                 txtYear.setText(libro.year.toString())
+
+                val libroEnBD = db.getLibro(libro.codigo)
+
+                if (libroEnBD.id > 0) {
+                    // el código ya existe en la tabla de libros
+                    libroId = libroEnBD.id
+                    btnAgregar.isEnabled = false
+                    btnActualizar.isEnabled = true
+                    btnBorrar.isEnabled = true
+                } else {
+                    // el código no existe en la tabla de libros
+                    libroId = 0
+                    btnAgregar.isEnabled = true
+                    btnActualizar.isEnabled = false
+                    btnBorrar.isEnabled = false
+                }
+
             } else {
                 Toast.makeText(
                     this,
@@ -100,4 +146,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun limpiarFormulario() {
+        txtCodigo.text.clear()
+        txtAutor.text.clear()
+        txtEditorial.text.clear()
+        txtYear.text.clear()
+
+        libroId = 0
+        btnAgregar.isEnabled = false
+        btnActualizar.isEnabled = false
+        btnBorrar.isEnabled = false
+    }
 }
