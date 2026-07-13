@@ -109,10 +109,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
 
-            libroId = id.toInt()
-            btnAgregar.isEnabled = false
-            btnActualizar.isEnabled = true
-            btnBorrar.isEnabled = true
+            limpiarFormulario()
         }
 
         btnActualizar.setOnClickListener {
