@@ -111,7 +111,6 @@ class MainActivity : AppCompatActivity() {
             )
 
             val filas = db.actualizarLibro(libro)
-
             Toast.makeText(
                 this,
                 "Se actualizaron $filas registro(s)",
