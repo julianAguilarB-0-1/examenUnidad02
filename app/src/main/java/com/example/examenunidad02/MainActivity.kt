@@ -101,6 +101,37 @@ class MainActivity : AppCompatActivity() {
             btnBorrar.isEnabled = true
         }
 
+        btnActualizar.setOnClickListener {
+            val libro = Libro(
+                id = libroId,
+                codigo = txtCodigo.text.toString().trim(),
+                autor = txtAutor.text.toString().trim(),
+                editorial = txtEditorial.text.toString().trim(),
+                year = txtYear.text.toString().trim().toIntOrNull() ?: 0
+            )
+
+            val filas = db.actualizarLibro(libro)
+
+            Toast.makeText(
+                this,
+                "Se actualizaron $filas registro(s)",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        btnBorrar.setOnClickListener {
+            val libro = Libro(id = libroId)
+
+            val filas = db.eliminarLibro(libro)
+
+            Toast.makeText(
+                this,
+                "Se borraron $filas registro(s)",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            limpiarFormulario()
+        }
     }
 
     private fun mostrarInformacionQR(jsonString: String) {
